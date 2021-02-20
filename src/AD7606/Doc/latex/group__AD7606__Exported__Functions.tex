@@ -1,0 +1,101 @@
+\hypertarget{group__AD7606__Exported__Functions}{}\doxysection{A\+D7606\+\_\+\+Exported\+\_\+\+Functions}
+\label{group__AD7606__Exported__Functions}\index{AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__AD7606__Exported__Functions_ga5421d7ca19ddea0910324ce9b51a22c0}{ad7606\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize \mbox{\hyperlink{structad7606}{ad7606}} periphery.(S\+PI, G\+P\+IO) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__AD7606__Exported__Functions_ga014a3a2e644a14e6b369109e564a4bc5}{ad7606\+\_\+\+Reset}} (void)
+\begin{DoxyCompactList}\small\item\em Reset A\+D7606, Please call it after \mbox{\hyperlink{group__AD7606__Exported__Functions_ga5421d7ca19ddea0910324ce9b51a22c0}{ad7606\+\_\+\+Init()}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__AD7606__Exported__Functions_ga01e5a5692b19ae10a132acb5f6bbebe6}{parse\+Raw\+Bytes}} (int32\+\_\+t $\ast$p\+Data, uint16\+\_\+t $\ast$raw)
+\begin{DoxyCompactList}\small\item\em parse raw byte \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__AD7606__Exported__Functions_gab485ff6aa63b130b7a181efd5793264f}{ad7606\+\_\+\+Fetch\+Data}} (\mbox{\hyperlink{structad7606}{ad7606}} $\ast$ad7606data)
+\begin{DoxyCompactList}\small\item\em Get A\+D7606 Data. (Blocking) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__AD7606__Exported__Functions_gab485ff6aa63b130b7a181efd5793264f}\label{group__AD7606__Exported__Functions_gab485ff6aa63b130b7a181efd5793264f}} 
+\index{AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}!ad7606\_FetchData@{ad7606\_FetchData}}
+\index{ad7606\_FetchData@{ad7606\_FetchData}!AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}}
+\doxysubsubsection{\texorpdfstring{ad7606\_FetchData()}{ad7606\_FetchData()}}
+{\footnotesize\ttfamily void ad7606\+\_\+\+Fetch\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structad7606}{ad7606}} $\ast$}]{ad7606data }\end{DoxyParamCaption})}
+
+
+
+Get A\+D7606 Data. (Blocking) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ad7606data} & Data parsed form A\+D7606 \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__AD7606__Exported__Functions_ga5421d7ca19ddea0910324ce9b51a22c0}\label{group__AD7606__Exported__Functions_ga5421d7ca19ddea0910324ce9b51a22c0}} 
+\index{AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}!ad7606\_Init@{ad7606\_Init}}
+\index{ad7606\_Init@{ad7606\_Init}!AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}}
+\doxysubsubsection{\texorpdfstring{ad7606\_Init()}{ad7606\_Init()}}
+{\footnotesize\ttfamily void ad7606\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initialize \mbox{\hyperlink{structad7606}{ad7606}} periphery.(S\+PI, G\+P\+IO) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__AD7606__Exported__Functions_ga014a3a2e644a14e6b369109e564a4bc5}\label{group__AD7606__Exported__Functions_ga014a3a2e644a14e6b369109e564a4bc5}} 
+\index{AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}!ad7606\_Reset@{ad7606\_Reset}}
+\index{ad7606\_Reset@{ad7606\_Reset}!AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}}
+\doxysubsubsection{\texorpdfstring{ad7606\_Reset()}{ad7606\_Reset()}}
+{\footnotesize\ttfamily void ad7606\+\_\+\+Reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Reset A\+D7606, Please call it after \mbox{\hyperlink{group__AD7606__Exported__Functions_ga5421d7ca19ddea0910324ce9b51a22c0}{ad7606\+\_\+\+Init()}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__AD7606__Exported__Functions_ga01e5a5692b19ae10a132acb5f6bbebe6}\label{group__AD7606__Exported__Functions_ga01e5a5692b19ae10a132acb5f6bbebe6}} 
+\index{AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}!parseRawBytes@{parseRawBytes}}
+\index{parseRawBytes@{parseRawBytes}!AD7606\_Exported\_Functions@{AD7606\_Exported\_Functions}}
+\doxysubsubsection{\texorpdfstring{parseRawBytes()}{parseRawBytes()}}
+{\footnotesize\ttfamily void parse\+Raw\+Bytes (\begin{DoxyParamCaption}\item[{int32\+\_\+t $\ast$}]{p\+Data,  }\item[{uint16\+\_\+t $\ast$}]{raw }\end{DoxyParamCaption})}
+
+
+
+parse raw byte 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+Data} & Data parsed form raw data \\
+\hline
+{\em raw} & raw data \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}

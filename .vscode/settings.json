@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "stm32f10x.h": "c",
+        "misc.h": "c",
+        "stm32_eval.h": "c",
+        "core_cm3.h": "c",
+        "stdint.h": "c",
+        "systick.h": "c",
+        "hal_like_i2c.h": "c",
+        "algorithm": "c",
+        "stm32f10x_sdio.h": "c"
+    }
+}
