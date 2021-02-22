@@ -3,10 +3,14 @@
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_usart.h>
 #include <stm32f10x_tim.h>
+#include <Systick.h>
 #include <encoder.h>
 #include <misc.h>
 #define ARRAYSIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
+void SysTick_Handler(){
+    IncTicks();
+}
 
 void USART1_Init(void)
 {
@@ -55,14 +59,17 @@ void UART_Transmit(uint8_t *data, uint16_t size)
 int main()
 {
     M_ENCODER mencoder;
+    SysTickInit();
     motor_encoder_init(mencoder);
     USART1_Init();
-
+    uint64_t lasttime = GetTicks();
     while(1)
     {
+        while((GetTicks() - lasttime) < 1000000);
         update_motordata(mencoder);
+        lasttime = GetTicks();
         char data[10] = {'\0'};
-        sprintf(data, "%d\r\n", mencoder->circle);
+        sprintf(data, "%d\r\n", mencoder->rpm);
         UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
     }
 

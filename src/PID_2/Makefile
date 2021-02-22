@@ -29,7 +29,7 @@ C_SOURCES  = $(TARGET_ROOT)/src/*.c
 C_SOURCES += $(STD_PERIPH_LIBS)/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c
 C_SOURCES += $(STD_PERIPH_LIBS)/Libraries/STM32F10x_StdPeriph_Driver/src/*.c
 C_SOURCES += $(STD_PERIPH_LIBS)/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/TrueSTUDIO/startup_stm32f10x_md.s
-#C_SOURCES += $(MY_LIBS)/*.c
+C_SOURCES += $(MY_LIBS)/*.c
 
 # Arm CPU Define
 CPU = -mcpu=cortex-m3
@@ -44,7 +44,7 @@ C_INCLUDES = -I$(TARGET_ROOT)/inc \
 	     -I$(STD_PERIPH_LIBS)/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/ \
 	     -I$(STD_PERIPH_LIBS)/Libraries/CMSIS/CM3/CoreSupport \
 	     -I$(STD_PERIPH_LIBS)/Libraries/STM32F10x_StdPeriph_Driver/inc \
-#		 -I$(MY_LIBS)/
+		 -I$(MY_LIBS)/
 
 # C Flag
 CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections 

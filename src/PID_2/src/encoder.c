@@ -61,6 +61,7 @@ void TIM3_IRQHandler(void)
 
 int8_t update_motordata(m_encoder *mencoder)
 {
+    mencoder->rpm = (circle_count - mencoder->circle);
     mencoder->circle = circle_count;
     return 0;
 }
