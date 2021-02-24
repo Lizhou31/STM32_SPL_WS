@@ -28,7 +28,7 @@ int8_t motor_encoder_init(m_encoder * mencoder)
     TIM_EncoderInterfaceConfig(ENCODERTIM, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);
     
     TIM_ICStructInit(&TIM_ICInitStructure);
-    TIM_ICInitStructure.TIM_ICFilter = 10;
+    TIM_ICInitStructure.TIM_ICFilter = 0x4;
     TIM_ICInit(TIM3, &TIM_ICInitStructure);
 
     TIM_ClearFlag(ENCODERTIM, TIM_FLAG_Update);
@@ -59,9 +59,11 @@ void TIM3_IRQHandler(void)
     TIM_ClearITPendingBit(TIM3,TIM_IT_Update);
 }
 
-int8_t update_motordata(m_encoder *mencoder)
+int8_t update_motordata_100ms(m_encoder *mencoder)
 {
-    mencoder->rpm = (circle_count - mencoder->circle);
-    mencoder->circle = circle_count;
+    int32_t circle = circle_count;
+    circle_count = 0;
+    mencoder->roataion_count = circle;
+    mencoder->rpm = (int32_t)(((float)circle/3)); // circle_count*10*60/180
     return 0;
 }

@@ -10,16 +10,16 @@
 #define TIM3CH1_PIN GPIO_Pin_6
 #define TIM3CH2_PIN GPIO_Pin_7
 #define ENCODERTIM TIM3
-#define TIM3_PERIOD 360*4-1
+#define TIM3_PERIOD 2*4-1
 
 /* TODO : need counter side? */
 typedef struct
 {
-    int32_t circle;
-    int32_t rpm;
+    int32_t roataion_count;
+    int32_t rpm;                //actually rotation per 6s
 }m_encoder, M_ENCODER[1];
 
 int8_t motor_encoder_init(m_encoder * mencoder);
-int8_t update_motordata(m_encoder *mencoder);
+int8_t update_motordata_100ms(m_encoder *mencoder);
 
 #endif /*__ENCODER_H */

@@ -65,8 +65,8 @@ int main()
     uint64_t lasttime = GetTicks();
     while(1)
     {
-        while((GetTicks() - lasttime) < 1000000);
-        update_motordata(mencoder);
+        while((GetTicks() - lasttime) < 100000);
+        update_motordata_100ms(mencoder);
         lasttime = GetTicks();
         char data[10] = {'\0'};
         sprintf(data, "%d\r\n", mencoder->rpm);
