@@ -5,6 +5,7 @@
 #include <stm32f10x_tim.h>
 #include <Systick.h>
 #include <encoder.h>
+#include <pwm.h>
 #include <misc.h>
 #define ARRAYSIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -61,6 +62,7 @@ int main()
     M_ENCODER mencoder;
     SysTickInit();
     motor_encoder_init(mencoder);
+    PWM_Init(0);
     USART1_Init();
     uint64_t lasttime = GetTicks();
     while(1)
