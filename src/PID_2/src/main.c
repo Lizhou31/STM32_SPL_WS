@@ -62,9 +62,10 @@ int main()
     M_ENCODER mencoder;
     SysTickInit();
     motor_encoder_init(mencoder);
-    PWM_Init(0);
+    PWM_Init();
     USART1_Init();
     uint64_t lasttime = GetTicks();
+    __IO uint16_t tempi = 0;
     while(1)
     {
         while((GetTicks() - lasttime) < 100000);
@@ -73,6 +74,7 @@ int main()
         char data[10] = {'\0'};
         sprintf(data, "%d\r\n", mencoder->rpm);
         UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
+        tempi = (tempi+1)%3;
+        changePWM_pulse((tempi+1)*180-1);
     }
-
 }

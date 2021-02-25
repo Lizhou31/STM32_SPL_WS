@@ -15,15 +15,12 @@
 
 
 
+static __INLINE void changePWM_pulse(uint16_t pulse)
+{
+    TIM2->CCR3 = pulse;
+}
 
-
-
-
-
-
-
-
-void PWM_Init(uint16_t period);
+void PWM_Init(void);
 
 
 #endif /*__PWM_H */

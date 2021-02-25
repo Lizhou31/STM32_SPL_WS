@@ -1,6 +1,6 @@
 #include <pwm.h>
 
-void PWM_Init(uint16_t period)
+void PWM_Init(void)
 {
     TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;
     TIM_OCInitTypeDef TIM_OCInitStruct;
@@ -25,7 +25,7 @@ void PWM_Init(uint16_t period)
     TIM_Cmd(TIM2,ENABLE);
 
     TIM_OCInitStruct.TIM_OCMode = TIM_OCMode_PWM1;
-    TIM_OCInitStruct.TIM_Pulse = 180 - 1;
+    TIM_OCInitStruct.TIM_Pulse = 360 - 1;
     TIM_OCInitStruct.TIM_OutputState = TIM_OutputState_Enable;
     TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
 
