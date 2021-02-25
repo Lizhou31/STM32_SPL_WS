@@ -2,7 +2,7 @@
 
 static __IO int32_t circle_count;
 
-int8_t motor_encoder_init(m_encoder * mencoder)
+int8_t motor_encoder_init(m_encoder *mencoder)
 {
     TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
     TIM_ICInitTypeDef TIM_ICInitStructure;
@@ -26,37 +26,38 @@ int8_t motor_encoder_init(m_encoder * mencoder)
 
     TIM_TimeBaseInit(ENCODERTIM, &TIM_TimeBaseInitStructure);
     TIM_EncoderInterfaceConfig(ENCODERTIM, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);
-    
+
     TIM_ICStructInit(&TIM_ICInitStructure);
     TIM_ICInitStructure.TIM_ICFilter = 0x4;
     TIM_ICInit(TIM3, &TIM_ICInitStructure);
 
     TIM_ClearFlag(ENCODERTIM, TIM_FLAG_Update);
-    TIM_ITConfig(ENCODERTIM, TIM_IT_Update,ENABLE);
+    TIM_ITConfig(ENCODERTIM, TIM_IT_Update, ENABLE);
 
     NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0x01;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-    TIM_SetCounter(ENCODERTIM,0);
+    TIM_SetCounter(ENCODERTIM, 0);
     TIM_Cmd(ENCODERTIM, ENABLE);
 
     return 0;
 }
 
-void TIM3_IRQHandler(void) 
+void TIM3_IRQHandler(void)
 {
-    if(TIM_GetITStatus(TIM3,TIM_FLAG_Update)==SET)
+    if (TIM_GetITStatus(TIM3, TIM_FLAG_Update) == SET)
     {
-        if((TIM3->CR1>>4 & 0x01) == 0)
+        if ((TIM3->CR1 >> 4 & 0x01) == 0)
             circle_count++;
-        else if((TIM3->CR1>>4 & 0x01) == 1){
+        else if ((TIM3->CR1 >> 4 & 0x01) == 1)
+        {
             circle_count--;
         }
     }
-    TIM_ClearITPendingBit(TIM3,TIM_IT_Update);
+    TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 }
 
 int8_t update_motordata_100ms(m_encoder *mencoder)
@@ -64,6 +65,7 @@ int8_t update_motordata_100ms(m_encoder *mencoder)
     int32_t circle = circle_count;
     circle_count = 0;
     mencoder->roataion_count = circle;
-    mencoder->rpm = (int32_t)(((float)circle/3)); // circle_count*10*60/180
+    mencoder->rpm = (int32_t)(((float)circle / 3)); // circle_count*10*60/180
+    mencoder->normalize_rpm = float_to_q31((float)mencoder->rpm / MAX_RPM);
     return 0;
 }
