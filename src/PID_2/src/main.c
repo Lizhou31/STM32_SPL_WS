@@ -11,6 +11,7 @@
 #define ARRAYSIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 M_ENCODER mencoder;
 PID_INSTANCE_Q31 pid_instance;
+float change;
 
 void SysTick_Handler()
 {
@@ -73,7 +74,7 @@ void InitTIM4(void)
     /* Init TIM3 CH1 and CH2 PIN for encoder */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
     TIM_TimeBaseStructInit(&TIM_TimeBaseInitStructure);
-    TIM_TimeBaseInitStructure.TIM_Period = 7200 - 1;
+    TIM_TimeBaseInitStructure.TIM_Period = 3600 - 1;
     TIM_TimeBaseInitStructure.TIM_Prescaler = 1000;
     TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
     TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
@@ -97,12 +98,12 @@ void TIM4_IRQHandler(void)
 {
     if (TIM_GetITStatus(TIM4, TIM_FLAG_Update) == SET)
     {
-        update_motordata_100ms(mencoder);
-        q31_t output = pid_q31(pid_instance, float_to_q31(0.6)-mencoder->normalize_rpm);
+        update_motordata_50ms(mencoder);
+        q31_t output = pid_q31(pid_instance, float_to_q31(change)-mencoder->normalize_rpm);
         changePWM_pulse(output);
-        char data[10] = {'\0'};
-        sprintf(data, "%d\r\n",mencoder->rpm);
-        UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
+        // char data[10] = {'\0'};
+        // sprintf(data, "%d\r\n",mencoder->rpm);
+        // UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
     }
     TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
 }
@@ -114,18 +115,27 @@ int main()
     PWM_Init();
     USART1_Init();    
     pid_instance->Kp = float_to_q31(0.3f);
-    pid_instance->Ki = float_to_q31(0.2f);
-    pid_instance->Kd = float_to_q31(0.01f);
+    pid_instance->Ki = float_to_q31(0.3f);
+    pid_instance->Kd = float_to_q31(0.2f);
     pid_init_q31(pid_instance, 1);
     InitTIM4();
+    uint8_t i = 0,inverse = 1;
     uint64_t lasttime = GetTicks();
     while (1)
     {
-        while ((GetTicks() - lasttime) < 1000000)
+        while ((GetTicks() - lasttime) < 100000)
             ;
         lasttime = GetTicks();
-        // char data[20] = {'\0'};
-        // sprintf(data, "%d\r\n",mencoder->rpm);
-        // UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
+        i++;
+        if(i>=100)
+        {
+            i=0;
+            change = inverse?change+0.1f:change-0.1f;
+            if(change>=1.f) inverse = 0;
+            else if(change<=0.0f) inverse = 1;
+        }
+        char data[10] = {'\0'};
+        sprintf(data, "%d\r\n",mencoder->rpm);
+        UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
     }
 }

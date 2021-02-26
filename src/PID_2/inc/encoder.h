@@ -13,17 +13,17 @@
 #define ENCODERTIM TIM3
 #define TIM3_PERIOD 2 * 4 - 1
 
-#define MAX_RPM 60.0f
+#define MAX_RPM 600.0f
 
 /* TODO : need counter side? */
 typedef struct
 {
     int32_t roataion_count;
-    int32_t rpm;         //actually rotation per 6s
-    q31_t normalize_rpm; //actually rotation per 6s
+    int32_t rpm;         
+    q31_t normalize_rpm; 
 } m_encoder, M_ENCODER[1];
 
 int8_t motor_encoder_init(m_encoder *mencoder);
-int8_t update_motordata_100ms(m_encoder *mencoder);
+int8_t update_motordata_50ms(m_encoder *mencoder);
 
 #endif /*__ENCODER_H */

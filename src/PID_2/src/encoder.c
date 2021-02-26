@@ -60,12 +60,12 @@ void TIM3_IRQHandler(void)
     TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 }
 
-int8_t update_motordata_100ms(m_encoder *mencoder)
+int8_t update_motordata_50ms(m_encoder *mencoder)
 {
     int32_t circle = circle_count;
     circle_count = 0;
     mencoder->roataion_count = circle;
-    mencoder->rpm = (int32_t)(((float)circle / 3)); // circle_count*10*60/180
+    mencoder->rpm = (int32_t)(((float)circle * 6.67f)); // circle_count*20*60/180
     mencoder->normalize_rpm = float_to_q31((float)mencoder->rpm / MAX_RPM);
     return 0;
 }
