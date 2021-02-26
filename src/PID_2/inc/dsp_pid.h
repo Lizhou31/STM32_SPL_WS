@@ -17,7 +17,7 @@ typedef struct
     q31_t Ki;       /**< The integral gain. */
     q31_t Kd;       /**< The derivative gain. */
 
-} pid_instance_q31, ARM_PID_INSTANCE_Q31[1];
+} pid_instance_q31, PID_INSTANCE_Q31[1];
 
 /**
    * @brief  Initialization function for the Q31 PID Control.
@@ -49,7 +49,7 @@ void pid_reset_q31(
          In order to avoid overflows completely the input signal must be scaled down by 2 bits as there are four additions.
          After all multiply-accumulates are performed, the 2.62 accumulator is truncated to 1.32 format and then saturated to 1.31 format.
  */
-CMSIS_INLINE static __INLINE q31_t arm_pid_q31(
+CMSIS_INLINE static __INLINE q31_t pid_q31(
     pid_instance_q31 *S,
     q31_t in)
 {

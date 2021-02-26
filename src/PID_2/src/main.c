@@ -3,12 +3,14 @@
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_usart.h>
 #include <stm32f10x_tim.h>
+#include <dsp_pid.h>
 #include <Systick.h>
 #include <encoder.h>
 #include <pwm.h>
 #include <misc.h>
 #define ARRAYSIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 M_ENCODER mencoder;
+PID_INSTANCE_Q31 pid_instance;
 
 void SysTick_Handler()
 {
@@ -96,6 +98,11 @@ void TIM4_IRQHandler(void)
     if (TIM_GetITStatus(TIM4, TIM_FLAG_Update) == SET)
     {
         update_motordata_100ms(mencoder);
+        q31_t output = pid_q31(pid_instance, float_to_q31(0.6)-mencoder->normalize_rpm);
+        changePWM_pulse(output);
+        char data[10] = {'\0'};
+        sprintf(data, "%d\r\n",mencoder->rpm);
+        UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
     }
     TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
 }
@@ -105,7 +112,11 @@ int main()
     SysTickInit();
     motor_encoder_init(mencoder);
     PWM_Init();
-    USART1_Init();
+    USART1_Init();    
+    pid_instance->Kp = float_to_q31(0.3f);
+    pid_instance->Ki = float_to_q31(0.2f);
+    pid_instance->Kd = float_to_q31(0.01f);
+    pid_init_q31(pid_instance, 1);
     InitTIM4();
     uint64_t lasttime = GetTicks();
     while (1)
@@ -113,8 +124,8 @@ int main()
         while ((GetTicks() - lasttime) < 1000000)
             ;
         lasttime = GetTicks();
-        char data[20] = {'\0'};
-        sprintf(data, "%f\r\n",q31_to_float(mencoder->normalize_rpm));
-        UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
+        // char data[20] = {'\0'};
+        // sprintf(data, "%d\r\n",mencoder->rpm);
+        // UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
     }
 }
