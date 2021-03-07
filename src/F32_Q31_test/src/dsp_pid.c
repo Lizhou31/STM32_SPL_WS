@@ -16,6 +16,13 @@ void pid_reset_q31(
     memset(S->state, 0, 3U * sizeof(q31_t));
 }
 
+void pid_reset_float(
+    pid_instance_float *S)
+{
+    /* Reset state to zero, The size will be always 3 samples */
+    memset(S->state, 0, 3U * sizeof(float));
+}
+
 /**
   @brief         Initialization function for the Q31 PID Control.
   @param[in,out] S               points to an instance of the Q31 PID structure
@@ -49,5 +56,26 @@ void pid_init_q31(
     {
         /* Reset state to zero, The size will be always 3 samples */
         memset(S->state, 0, 3U * sizeof(q31_t));
+    }
+}
+
+void pid_init_float(
+    pid_instance_float *S,
+    int32_t resetStateFlag)
+{
+    /* Derived coefficient A0 */
+    S->A0 = S->Kp + S->Ki + S->Kd;
+
+    /* Derived coefficient A1 */
+    S->A1 = -(S->Kd + S->Kd + S->Kp);
+
+    /* Derived coefficient A2 */
+    S->A2 = S->Kd;
+
+    /* Check whether state needs reset or not */
+    if (resetStateFlag)
+    {
+        /* Reset state to zero, The size will be always 3 samples */
+        memset(S->state, 0, 3U * sizeof(float));
     }
 }

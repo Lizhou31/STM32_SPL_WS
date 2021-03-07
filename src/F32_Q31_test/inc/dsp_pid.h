@@ -20,12 +20,31 @@ typedef struct
 } pid_instance_q31, PID_INSTANCE_Q31[1];
 
 /**
+   * @brief Instance structure for the Q31 PID Control.
+   */
+typedef struct
+{
+    float A0;       /**< The derived gain, A0 = Kp + Ki + Kd . */
+    float A1;       /**< The derived gain, A1 = -Kp - 2Kd. */
+    float A2;       /**< The derived gain, A2 = Kd . */
+    float state[3]; /**< The state array of length 3. */
+    float Kp;       /**< The proportional gain. */
+    float Ki;       /**< The integral gain. */
+    float Kd;       /**< The derivative gain. */
+
+} pid_instance_float, PID_INSTANCE_FLOAT[1];
+
+/**
    * @brief  Initialization function for the Q31 PID Control.
    * @param[in,out] S               points to an instance of the Q15 PID structure.
    * @param[in]     resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the state.
    */
 void pid_init_q31(
     pid_instance_q31 *S,
+    int32_t resetStateFlag);
+
+void pid_init_float(
+    pid_instance_float *S,
     int32_t resetStateFlag);
 
 /**
@@ -35,6 +54,9 @@ void pid_init_q31(
 
 void pid_reset_q31(
     pid_instance_q31 *S);
+
+void pid_reset_float(
+    pid_instance_float *S);
 
 /**
   @brief         Process function for the Q31 PID Control.
@@ -70,6 +92,22 @@ CMSIS_INLINE static __INLINE q31_t pid_q31(
 
     /* out += y[n-1] */
     out += S->state[2];
+
+    /* Update state */
+    S->state[1] = S->state[0];
+    S->state[0] = in;
+    S->state[2] = out;
+
+    /* return to application */
+    return (out);
+}
+
+
+CMSIS_INLINE static __INLINE float pid_float(
+    pid_instance_float *S,
+    float in)
+{
+    float out = S->A0*in + S->A1*S->state[0] + S->A2*S->state[1] + S->state[2];
 
     /* Update state */
     S->state[1] = S->state[0];
