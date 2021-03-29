@@ -3,7 +3,7 @@
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_usart.h>
 #include <stm32f10x_tim.h>
-#include <dsp_pid.h>
+#include <PID_Q31.h>
 #include <Systick.h>
 #include <encoder.h>
 #include <pwm.h>

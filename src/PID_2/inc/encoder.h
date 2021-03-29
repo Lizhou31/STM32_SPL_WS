@@ -5,7 +5,7 @@
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_tim.h>
 #include <stm32f10x_rcc.h>
-#include <dsp_math_type.h>
+#include <PID_Q31.h>
 #include <misc.h>
 
 #define TIM3CH1_PIN GPIO_Pin_6
