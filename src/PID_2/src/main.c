@@ -100,7 +100,7 @@ void TIM4_IRQHandler(void)
     {
         update_motordata_50ms(mencoder);
         q31_t output = pid_q31(pid_instance, float_to_q31(change)-mencoder->normalize_rpm);
-        changePWM_pulse(output);
+        changePWM_pulse(((output + mencoder->normalize_rpm)>0)?(output + mencoder->normalize_rpm):0);
         // char data[10] = {'\0'};
         // sprintf(data, "%d\r\n",mencoder->rpm);
         // UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
@@ -114,28 +114,30 @@ int main()
     motor_encoder_init(mencoder);
     PWM_Init();
     USART1_Init();    
-    pid_instance->Kp = float_to_q31(0.3f);
-    pid_instance->Ki = float_to_q31(0.3f);
-    pid_instance->Kd = float_to_q31(0.2f);
+    pid_instance->Kp = float_to_q31(0.4f);
+    pid_instance->Ki = float_to_q31(0.1f);
+    pid_instance->Kd = float_to_q31(0.1f);
     pid_init_q31(pid_instance, 1);
     InitTIM4();
     uint8_t i = 0,inverse = 1;
     uint64_t lasttime = GetTicks();
+    changePWM_pulse(float_to_q31(0.1f));
+    change = 0.2f;
     while (1)
     {
         while ((GetTicks() - lasttime) < 100000)
             ;
         lasttime = GetTicks();
-        i++;
-        if(i>=100)
-        {
-            i=0;
-            change = inverse?change+0.1f:change-0.1f;
-            if(change>=1.f) inverse = 0;
-            else if(change<=0.0f) inverse = 1;
-        }
-        char data[10] = {'\0'};
-        sprintf(data, "%d\r\n",mencoder->rpm);
+        // i++;
+        // if(i>=100)
+        // {
+        //     i=0;
+        //     change = inverse?change+0.1f:change-0.1f;
+        //     if(change>=1.f) inverse = 0;
+        //     else if(change<=0.0f) inverse = 1;
+        // }
+        char data[25] = {'\0'};
+        sprintf(data, "%d %f %f\r\n",mencoder->rpm, q31_to_float(((pid_instance->state[2] + mencoder->normalize_rpm)>0)?(pid_instance->state[2] + mencoder->normalize_rpm):float_to_q31(0.05f)), q31_to_float(pid_instance->state[2]));
         UART_Transmit((uint8_t *)data, ARRAYSIZE(data));
     }
 }
