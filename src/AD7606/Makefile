@@ -15,7 +15,7 @@ DEBUG = 1
 OPT = -Og
 
 # Build Directory
-BUILD_DIR = build
+BUILD_DIR = $(PRJ_ROOT)/build
 
 # WorkSpace Definition
 PRJ_ROOT ?= ../..
